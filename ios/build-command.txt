@@ -1,0 +1,26 @@
+mkdir -p ios/sdk/out
+xcodebuild clean \
+    -workspace ios/jitsi-meet.xcworkspace \
+    -scheme JitsiMeetSDKLite
+xcodebuild archive \
+    -workspace ios/jitsi-meet.xcworkspace \
+    -scheme JitsiMeetSDKLite  \
+    -configuration Release \
+    -sdk iphonesimulator \
+    -destination='generic/platform=iOS Simulator' \
+    -archivePath ios/sdk/out/ios-simulator \
+    SKIP_INSTALL=NO \
+    BUILD_LIBRARY_FOR_DISTRIBUTION=YES
+xcodebuild archive \
+    -workspace ios/jitsi-meet.xcworkspace \
+    -scheme JitsiMeetSDKLite  \
+    -configuration Release \
+    -sdk iphoneos \
+    -destination='generic/platform=iOS' \
+    -archivePath ios/sdk/out/ios-device \
+    SKIP_INSTALL=NO \
+    BUILD_LIBRARY_FOR_DISTRIBUTION=YES
+xcodebuild -create-xcframework \
+    -framework ios/sdk/out/ios-device.xcarchive/Products/Library/Frameworks/JitsiMeetSDK.framework \
+    -framework ios/sdk/out/ios-simulator.xcarchive/Products/Library/Frameworks/JitsiMeetSDK.framework \
+    -output ios/sdk/out/JitsiMeetSDK.xcframework
