@@ -5,7 +5,11 @@ import { SET_TILE_VIEW_DIMENSIONS } from './actionTypes';
 // eslint-disable-next-line lines-around-comment
 // @ts-ignore
 import styles from './components/native/styles';
-import { SQUARE_TILE_ASPECT_RATIO, TILE_MARGIN } from './constants';
+import {
+    SQUARE_TILE_ASPECT_RATIO,
+    TILE_ASPECT_RATIO,
+    TILE_MARGIN
+} from './constants';
 import { getColumnCount, getTileViewParticipantCount } from './functions.native';
 
 export * from './actions.any';

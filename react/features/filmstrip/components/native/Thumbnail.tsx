@@ -34,7 +34,7 @@ import {
     showSharedVideoMenu
 } from '../../../participants-pane/actions.native';
 import { toggleToolboxVisible } from '../../../toolbox/actions.native';
-import { SQUARE_TILE_ASPECT_RATIO } from '../../constants';
+import {SQUARE_TILE_ASPECT_RATIO, TILE_ASPECT_RATIO} from '../../constants';
 
 import AudioMutedIndicator from './AudioMutedIndicator';
 import ModeratorIndicator from './ModeratorIndicator';
@@ -218,7 +218,7 @@ class Thumbnail extends PureComponent<IProps> {
             indicators.push(<View
                 key = 'top-left-indicators'
                 style = { styles.thumbnailTopLeftIndicatorContainer as ViewStyle }>
-                { !_isVirtualScreenshare && <ConnectionIndicator participantId = { participantId } /> }
+                {/*{ !_isVirtualScreenshare && <ConnectionIndicator participantId = { participantId } /> }*/}
                 { !_isVirtualScreenshare && <RaisedHandIndicator participantId = { participantId } /> }
                 { tileView && (isScreenShare || _isVirtualScreenshare) && (
                     <View style = { styles.screenShareIndicatorContainer as ViewStyle }>
@@ -230,8 +230,7 @@ class Thumbnail extends PureComponent<IProps> {
                 key = 'bottom-indicators'
                 style = { styles.thumbnailIndicatorContainer }>
                 <Container
-                    style = { ((audioMuted || renderModeratorIndicator) && styles.bottomIndicatorsContainer
-                        ) as StyleType }>
+                    style = { (styles.bottomIndicatorsContainer) as StyleType }>
                     { audioMuted && !_isVirtualScreenshare && <AudioMutedIndicator /> }
                     { !tileView && _pinned && <PinnedIndicator />}
                     { renderModeratorIndicator && !_isVirtualScreenshare && <ModeratorIndicator />}
@@ -357,7 +356,7 @@ class Thumbnail extends PureComponent<IProps> {
         return (
             <Container
                 onClick = { this._onClick }
-                onLongPress = { this._onThumbnailLongPress }
+                // onLongPress = { this._onThumbnailLongPress }
                 style = { [
                     styles.thumbnail,
                     styleOverrides,

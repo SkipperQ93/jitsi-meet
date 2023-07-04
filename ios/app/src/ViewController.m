@@ -29,6 +29,10 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   
+  //            let userInfo = JitsiMeetUserInfo(displayName: "tac20049", andEmail: nil, andAvatar: nil)
+  //            builder.userInfo = userInfo
+  
+  JitsiMeetUserInfo *userInfo = [[JitsiMeetUserInfo alloc] initWithDisplayName:@"SHAHEEN 2" andEmail:nil andAvatar:nil];
   
   JitsiMeetConferenceOptions *options = [JitsiMeetConferenceOptions fromBuilder:^(JitsiMeetConferenceOptionsBuilder *builder) {
     
@@ -36,32 +40,33 @@
     
     //Custom Feature Flags
     [builder setFeatureFlag:@"welcomepage.enabled" withBoolean:NO];
-    [builder setFeatureFlag:@"add-people.enabled" withBoolean:NO];
-    [builder setFeatureFlag:@"call-integration.enabled" withBoolean:NO];
-    [builder setFeatureFlag:@"car-mode.enabled" withBoolean:NO];
-    [builder setFeatureFlag:@"close-captions.enabled" withBoolean:NO];
-    [builder setFeatureFlag:@"chat.enabled" withBoolean:NO];
-    [builder setFeatureFlag:@"filmstrip.enabled" withBoolean:NO];
-    [builder setFeatureFlag:@"help.enabled" withBoolean:NO];
-    [builder setFeatureFlag:@"invite.enabled" withBoolean:NO];
-    [builder setFeatureFlag:@"lobby-mode.enabled" withBoolean:NO];
-    [builder setFeatureFlag:@"meeting-name.enabled" withBoolean:NO];
+//    [builder setFeatureFlag:@"add-people.enabled" withBoolean:NO];
+////    [builder setFeatureFlag:@"call-integration.enabled" withBoolean:NO];
+//    [builder setFeatureFlag:@"car-mode.enabled" withBoolean:NO];
+//    [builder setFeatureFlag:@"close-captions.enabled" withBoolean:NO];
+//    [builder setFeatureFlag:@"chat.enabled" withBoolean:NO];
+//    [builder setFeatureFlag:@"filmstrip.enabled" withBoolean:NO];
+//    [builder setFeatureFlag:@"help.enabled" withBoolean:NO];
+//    [builder setFeatureFlag:@"invite.enabled" withBoolean:NO];
+//    [builder setFeatureFlag:@"lobby-mode.enabled" withBoolean:NO];
+//    [builder setFeatureFlag:@"meeting-name.enabled" withBoolean:NO];
     [builder setFeatureFlag:@"prejoinpage.enabled" withBoolean:NO];
-    [builder setFeatureFlag:@"raise-hand.enabled" withBoolean:NO];
-    [builder setFeatureFlag:@"reactions.enabled" withBoolean:NO];
-    [builder setFeatureFlag:@"security-options.enabled" withBoolean:NO];
-    [builder setFeatureFlag:@"server-url-change.enabled" withBoolean:NO];
-    [builder setFeatureFlag:@"settings.enabled" withBoolean:NO];
-    [builder setFeatureFlag:@"speakerstats.enabled" withBoolean:NO];
-    [builder setFeatureFlag:@"kick-out.enabled" withBoolean:NO];
-    [builder setFeatureFlag:@"tile-view.enabled" withBoolean:NO];
-    [builder setFeatureFlag:@"toolbox.alwaysVisible" withBoolean:YES];
+//    [builder setFeatureFlag:@"raise-hand.enabled" withBoolean:NO];
+//    [builder setFeatureFlag:@"reactions.enabled" withBoolean:NO];
+//    [builder setFeatureFlag:@"security-options.enabled" withBoolean:NO];
+//    [builder setFeatureFlag:@"server-url-change.enabled" withBoolean:NO];
+//    [builder setFeatureFlag:@"settings.enabled" withBoolean:NO];
+//    [builder setFeatureFlag:@"speakerstats.enabled" withBoolean:NO];
+//    [builder setFeatureFlag:@"kick-out.enabled" withBoolean:NO];
+//    [builder setFeatureFlag:@"tile-view.enabled" withBoolean:NO];
+//    [builder setFeatureFlag:@"toolbox.alwaysVisible" withBoolean:YES];
     [builder setFeatureFlag:@"toolbox.enabled" withBoolean:NO];
-    [builder setFeatureFlag:@"video-share.enabled" withBoolean:NO];
+//    [builder setFeatureFlag:@"video-share.enabled" withBoolean:NO];
     
     //Custom Properties
-    [builder setAudioOnly:YES];
+//    [builder setAudioOnly:YES];
     [builder setRoom:@"USM-M01"];
+    [builder setUserInfo:userInfo];
     
     //Custom Configurations
     [builder setConfigOverride:@"disableModeratorIndicator" withBoolean: YES];
