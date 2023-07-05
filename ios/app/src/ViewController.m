@@ -58,7 +58,7 @@
 //    [builder setFeatureFlag:@"settings.enabled" withBoolean:NO];
 //    [builder setFeatureFlag:@"speakerstats.enabled" withBoolean:NO];
 //    [builder setFeatureFlag:@"kick-out.enabled" withBoolean:NO];
-//    [builder setFeatureFlag:@"tile-view.enabled" withBoolean:NO];
+    [builder setFeatureFlag:@"tile-view.enabled" withBoolean:YES];
 //    [builder setFeatureFlag:@"toolbox.alwaysVisible" withBoolean:YES];
     [builder setFeatureFlag:@"toolbox.enabled" withBoolean:NO];
 //    [builder setFeatureFlag:@"video-share.enabled" withBoolean:NO];
@@ -73,6 +73,7 @@
     [builder setConfigOverride:@"p2p.enabled" withBoolean: NO];
     [builder setConfigOverride:@"disableThirdPartyRequests" withBoolean: YES];
     [builder setConfigOverride:@"analytics.disabled" withBoolean: YES];
+    [builder setConfigOverride:@"disableInviteFunctions" withBoolean:YES];
     
   }];
   
