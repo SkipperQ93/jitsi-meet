@@ -20,7 +20,7 @@
 #import <React/RCTLog.h>
 #import <WebRTC/WebRTC.h>
 
-#import "JitsiAudioSession+Private.h"
+#import "LogUtils.h"
 
 
 // Audio mode
@@ -34,10 +34,9 @@ typedef enum {
 static NSString * const kDevicesChanged = @"org.jitsi.meet:features/audio-mode#devices-update";
 
 // Device types (must match JS and Java)
-static NSString * const kDeviceTypeBluetooth  = @"BLUETOOTH";
-static NSString * const kDeviceTypeCar        = @"CAR";
-static NSString * const kDeviceTypeEarpiece   = @"EARPIECE";
 static NSString * const kDeviceTypeHeadphones = @"HEADPHONES";
+static NSString * const kDeviceTypeBluetooth  = @"BLUETOOTH";
+static NSString * const kDeviceTypeEarpiece   = @"EARPIECE";
 static NSString * const kDeviceTypeSpeaker    = @"SPEAKER";
 static NSString * const kDeviceTypeUnknown    = @"UNKNOWN";
 
@@ -114,7 +113,7 @@ RCT_EXPORT_MODULE();
         isSpeakerOn = NO;
         isEarpieceOn = NO;
 
-        RTCAudioSession *session = JitsiAudioSession.rtcAudioSession;
+        RTCAudioSession *session = [RTCAudioSession sharedInstance];
         [session addDelegate:self];
     }
 
@@ -128,7 +127,7 @@ RCT_EXPORT_MODULE();
 
 - (BOOL)setConfigWithoutLock:(RTCAudioSessionConfiguration *)config
                        error:(NSError * _Nullable *)outError {
-    RTCAudioSession *session = JitsiAudioSession.rtcAudioSession;
+    RTCAudioSession *session = [RTCAudioSession sharedInstance];
 
     return [session setConfiguration:config error:outError];
 }
@@ -136,7 +135,7 @@ RCT_EXPORT_MODULE();
 - (BOOL)setConfig:(RTCAudioSessionConfiguration *)config
             error:(NSError * _Nullable *)outError {
 
-    RTCAudioSession *session = JitsiAudioSession.rtcAudioSession;
+    RTCAudioSession *session = [RTCAudioSession sharedInstance];
     [session lockForConfiguration];
     BOOL success = [self setConfigWithoutLock:config error:outError];
     [session unlockForConfiguration];
@@ -177,9 +176,9 @@ RCT_EXPORT_METHOD(setMode:(int)mode
 RCT_EXPORT_METHOD(setAudioDevice:(NSString *)device
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
-    RCTLogInfo(@"[AudioMode] Selected device: %@", device);
+    DDLogInfo(@"[AudioMode] Selected device: %@", device);
     
-    RTCAudioSession *session = JitsiAudioSession.rtcAudioSession;
+    RTCAudioSession *session = [RTCAudioSession sharedInstance];
     [session lockForConfiguration];
     BOOL success;
     NSError *error = nil;
@@ -190,7 +189,7 @@ RCT_EXPORT_METHOD(setAudioDevice:(NSString *)device
     
     // The speaker is special, so test for it first.
     if ([device isEqualToString:kDeviceTypeSpeaker]) {
-        forceSpeaker = YES;
+        forceSpeaker = NO;
         success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
     } else {
         // Here we use AVAudioSession because RTCAudioSession doesn't expose availableInputs.
@@ -247,8 +246,6 @@ RCT_EXPORT_METHOD(updateDeviceList) {
 - (void)audioSessionDidChangeRoute:(RTCAudioSession *)session
                             reason:(AVAudioSessionRouteChangeReason)reason
                      previousRoute:(AVAudioSessionRouteDescription *)previousRoute {
-    RCTLogInfo(@"[AudioMode] Route changed, reason: %lu", (unsigned long)reason);
-
     // Update JS about the changes.
     [self notifyDevicesChanged];
 
@@ -261,10 +258,8 @@ RCT_EXPORT_METHOD(updateDeviceList) {
                 self->forceEarpiece = NO;
                 break;
             case AVAudioSessionRouteChangeReasonCategoryChange:
-                // The category has changed, re-apply our config.
-                // NB: It's tempting to doa  category check here and skip the processing,
-                // but that won't work. If the config changes but the category remains
-                // the same we'll still find ourselves here.
+                // The category has changed. Check if it's the one we want and adjust as
+                // needed.
                 break;
             default:
                 return;
@@ -274,10 +269,11 @@ RCT_EXPORT_METHOD(updateDeviceList) {
         // This is to play well with other components which could be integrated
         // into the final application.
         if (self->activeMode != kAudioModeDefault) {
-            RCTLogInfo(@"[AudioMode] Route changed, reapplying RTCAudioSession config");
+            DDLogInfo(@"[AudioMode] Route changed, reapplying RTCAudioSession config");
             RTCAudioSessionConfiguration *config = [self configForMode:self->activeMode];
             [self setConfig:config error:nil];
             if (self->forceSpeaker && !self->isSpeakerOn) {
+                RTCAudioSession *session = [RTCAudioSession sharedInstance];
                 [session lockForConfiguration];
                 [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
                 [session unlockForConfiguration];
@@ -287,7 +283,7 @@ RCT_EXPORT_METHOD(updateDeviceList) {
 }
 
 - (void)audioSession:(RTCAudioSession *)audioSession didSetActive:(BOOL)active {
-    RCTLogInfo(@"[AudioMode] Audio session didSetActive:%d", active);
+    DDLogInfo(@"[AudioMode] Audio session didSetActive:%d", active);
 }
 
 #pragma mark - Helper methods
@@ -323,8 +319,6 @@ RCT_EXPORT_METHOD(updateDeviceList) {
             || [portType isEqualToString:AVAudioSessionPortBluetoothLE]
             || [portType isEqualToString:AVAudioSessionPortBluetoothA2DP]) {
         return kDeviceTypeBluetooth;
-    } else if ([portType isEqualToString:AVAudioSessionPortCarAudio]) {
-        return kDeviceTypeCar; 
     } else {
         return kDeviceTypeUnknown;
     }
@@ -360,7 +354,7 @@ RCT_EXPORT_METHOD(updateDeviceList) {
                 break;
             }
         }
-
+        
         for (AVAudioSessionPortDescription *portDesc in session.availableInputs) {
             // Skip "Phone" if headphones are present.
             if (headphonesAvailable && [portDesc.portType isEqualToString:AVAudioSessionPortBuiltInMic]) {

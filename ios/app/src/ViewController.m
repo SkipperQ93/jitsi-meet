@@ -67,6 +67,7 @@
 //    [builder setAudioOnly:YES];
     [builder setRoom:@"USM-M01"];
     [builder setUserInfo:userInfo];
+    [builder setAudioOnly:YES];
     
     //Custom Configurations
     [builder setConfigOverride:@"disableModeratorIndicator" withBoolean: YES];
