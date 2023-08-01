@@ -58,6 +58,7 @@ static NSString * const kDeviceTypeUnknown    = @"UNKNOWN";
     BOOL forceEarpiece;
     BOOL isSpeakerOn;
     BOOL isEarpieceOn;
+    BOOL shouldForceSpeakerForVideo;
 }
 
 RCT_EXPORT_MODULE();
@@ -95,12 +96,12 @@ RCT_EXPORT_MODULE();
 
         audioCallConfig = [[RTCAudioSessionConfiguration alloc] init];
         audioCallConfig.category = AVAudioSessionCategoryPlayAndRecord;
-        audioCallConfig.categoryOptions = AVAudioSessionCategoryOptionAllowBluetooth | AVAudioSessionCategoryOptionDefaultToSpeaker;
+        audioCallConfig.categoryOptions = AVAudioSessionCategoryOptionAllowBluetooth;
         audioCallConfig.mode = AVAudioSessionModeVoiceChat;
 
         videoCallConfig = [[RTCAudioSessionConfiguration alloc] init];
         videoCallConfig.category = AVAudioSessionCategoryPlayAndRecord;
-        videoCallConfig.categoryOptions = AVAudioSessionCategoryOptionAllowBluetooth;
+        videoCallConfig.categoryOptions = AVAudioSessionCategoryOptionAllowBluetooth | AVAudioSessionCategoryOptionDefaultToSpeaker;
         videoCallConfig.mode = AVAudioSessionModeVideoChat;
 
         // Manually routing audio to the earpiece doesn't quite work unless one disables BT (weird, I know).
@@ -113,6 +114,7 @@ RCT_EXPORT_MODULE();
         forceEarpiece = NO;
         isSpeakerOn = NO;
         isEarpieceOn = NO;
+        shouldForceSpeakerForVideo = YES;
 
         RTCAudioSession *session = JitsiAudioSession.rtcAudioSession;
         [session addDelegate:self];
@@ -151,6 +153,8 @@ RCT_EXPORT_METHOD(setMode:(int)mode
                    reject:(RCTPromiseRejectBlock)reject) {
     RTCAudioSessionConfiguration *config = [self configForMode:mode];
     NSError *error;
+    
+    RCTLogInfo(@"[AudioMode] Set mode: %d", mode);
 
     if (config == nil) {
         reject(@"setMode", @"Invalid mode", nil);
@@ -161,6 +165,10 @@ RCT_EXPORT_METHOD(setMode:(int)mode
     if (mode == kAudioModeDefault) {
         forceSpeaker = NO;
         forceEarpiece = NO;
+    }
+    
+    if (mode == kAudioModeVideoCall) {
+        shouldForceSpeakerForVideo = YES;
     }
 
     activeMode = mode;
@@ -178,6 +186,8 @@ RCT_EXPORT_METHOD(setAudioDevice:(NSString *)device
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
     RCTLogInfo(@"[AudioMode] Selected device: %@", device);
+    
+    shouldForceSpeakerForVideo = NO;
     
     RTCAudioSession *session = JitsiAudioSession.rtcAudioSession;
     [session lockForConfiguration];
@@ -248,9 +258,20 @@ RCT_EXPORT_METHOD(updateDeviceList) {
                             reason:(AVAudioSessionRouteChangeReason)reason
                      previousRoute:(AVAudioSessionRouteDescription *)previousRoute {
     RCTLogInfo(@"[AudioMode] Route changed, reason: %lu", (unsigned long)reason);
+    RCTLogInfo(@"[AudioMode] Route changed with previous: %@ --- current: %@", previousRoute.debugDescription, session.currentRoute.outputs.firstObject.debugDescription);
 
     // Update JS about the changes.
     [self notifyDevicesChanged];
+    
+    if (self->activeMode == kAudioModeVideoCall && self->shouldForceSpeakerForVideo == YES) {
+        RCTLogInfo(@"[AudioMode] Override to speaker");
+        RTCAudioSessionConfiguration *config = [self configForMode:self->activeMode];
+        [self setConfig:config error:nil];
+        [session lockForConfiguration];
+        [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+        [session unlockForConfiguration];
+    }
+
 
     dispatch_async(_workerQueue, ^{
         switch (reason) {
@@ -269,20 +290,7 @@ RCT_EXPORT_METHOD(updateDeviceList) {
             default:
                 return;
         }
-
-        // We don't want to touch the category when in default mode.
-        // This is to play well with other components which could be integrated
-        // into the final application.
-        if (self->activeMode != kAudioModeDefault) {
-            RCTLogInfo(@"[AudioMode] Route changed, reapplying RTCAudioSession config");
-            RTCAudioSessionConfiguration *config = [self configForMode:self->activeMode];
-            [self setConfig:config error:nil];
-            if (self->forceSpeaker && !self->isSpeakerOn) {
-                [session lockForConfiguration];
-                [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-                [session unlockForConfiguration];
-            }
-        }
+        
     });
 }
 
