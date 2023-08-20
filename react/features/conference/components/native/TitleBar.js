@@ -64,40 +64,40 @@ const TitleBar = (props: Props) => {
     return (
         <View
             style = { styles.titleBarWrapper }>
-            <View style = { styles.pipButtonContainer }>
-                <PictureInPictureButton styles = { styles.pipButton } />
-            </View>
-            <View
-                pointerEvents = 'box-none'
-                style = { styles.roomNameWrapper }>
-                {
-                    props._conferenceTimerEnabled
-                    && <View style = { styles.roomTimerView }>
-                        <ConferenceTimer textStyle = { styles.roomTimer } />
-                    </View>
-                }
-                {
-                    props._meetingNameEnabled
-                    && <View style = { styles.roomNameView }>
-                        <Text
-                            numberOfLines = { 1 }
-                            style = { styles.roomName }>
-                            { props._meetingName }
-                        </Text>
-                    </View>
-                }
-                {/* eslint-disable-next-line react/jsx-no-bind */}
-                <Labels createOnPress = { props._createOnPress } />
-            </View>
+            {/*<View style = { styles.pipButtonContainer }>*/}
+            {/*    <PictureInPictureButton styles = { styles.pipButton } />*/}
+            {/*</View>*/}
+            {/*<View*/}
+            {/*    pointerEvents = 'box-none'*/}
+            {/*    style = { styles.roomNameWrapper }>*/}
+            {/*    {*/}
+            {/*        props._conferenceTimerEnabled*/}
+            {/*        && <View style = { styles.roomTimerView }>*/}
+            {/*            <ConferenceTimer textStyle = { styles.roomTimer } />*/}
+            {/*        </View>*/}
+            {/*    }*/}
+            {/*    {*/}
+            {/*        props._meetingNameEnabled*/}
+            {/*        && <View style = { styles.roomNameView }>*/}
+            {/*            <Text*/}
+            {/*                numberOfLines = { 1 }*/}
+            {/*                style = { styles.roomName }>*/}
+            {/*                { props._meetingName }*/}
+            {/*            </Text>*/}
+            {/*        </View>*/}
+            {/*    }*/}
+            {/*    /!* eslint-disable-next-line react/jsx-no-bind *!/*/}
+            {/*    <Labels createOnPress = { props._createOnPress } />*/}
+            {/*</View>*/}
             <View style = { styles.titleBarButtonContainer }>
                 <ToggleCameraButton styles = { styles.titleBarButton } />
             </View>
             <View style = { styles.titleBarButtonContainer }>
                 <AudioDeviceToggleButton styles = { styles.titleBarButton } />
             </View>
-            <View style = { styles.titleBarButtonContainer }>
-                <ParticipantsPaneButton styles = { styles.titleBarButton } />
-            </View>
+            {/*<View style = { styles.titleBarButtonContainer }>*/}
+            {/*    <ParticipantsPaneButton styles = { styles.titleBarButton } />*/}
+            {/*</View>*/}
         </View>
     );
 };

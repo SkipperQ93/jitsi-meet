@@ -102,8 +102,9 @@ const styles = {
         maxWidth: 580,
         marginLeft: 'auto',
         marginRight: 'auto',
-        width: '100%'
-    }
+        width: '100%',
+        alignItems: "center"
+    },
 };
 
 export default styles;

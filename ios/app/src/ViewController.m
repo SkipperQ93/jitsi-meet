@@ -40,28 +40,29 @@
     
     //Custom Feature Flags
     [builder setFeatureFlag:@"welcomepage.enabled" withBoolean:NO];
-//    [builder setFeatureFlag:@"add-people.enabled" withBoolean:NO];
+    [builder setFeatureFlag:@"add-people.enabled" withBoolean:NO];
 ////    [builder setFeatureFlag:@"call-integration.enabled" withBoolean:NO];
-//    [builder setFeatureFlag:@"car-mode.enabled" withBoolean:NO];
-//    [builder setFeatureFlag:@"close-captions.enabled" withBoolean:NO];
-//    [builder setFeatureFlag:@"chat.enabled" withBoolean:NO];
-//    [builder setFeatureFlag:@"filmstrip.enabled" withBoolean:NO];
-//    [builder setFeatureFlag:@"help.enabled" withBoolean:NO];
-//    [builder setFeatureFlag:@"invite.enabled" withBoolean:NO];
-//    [builder setFeatureFlag:@"lobby-mode.enabled" withBoolean:NO];
-//    [builder setFeatureFlag:@"meeting-name.enabled" withBoolean:NO];
+    [builder setFeatureFlag:@"car-mode.enabled" withBoolean:NO];
+    [builder setFeatureFlag:@"close-captions.enabled" withBoolean:NO];
+    [builder setFeatureFlag:@"chat.enabled" withBoolean:NO];
+    [builder setFeatureFlag:@"filmstrip.enabled" withBoolean:NO];
+    [builder setFeatureFlag:@"help.enabled" withBoolean:NO];
+    [builder setFeatureFlag:@"invite.enabled" withBoolean:NO];
+    [builder setFeatureFlag:@"lobby-mode.enabled" withBoolean:NO];
+    [builder setFeatureFlag:@"meeting-name.enabled" withBoolean:NO];
     [builder setFeatureFlag:@"prejoinpage.enabled" withBoolean:NO];
-//    [builder setFeatureFlag:@"raise-hand.enabled" withBoolean:NO];
-//    [builder setFeatureFlag:@"reactions.enabled" withBoolean:NO];
-//    [builder setFeatureFlag:@"security-options.enabled" withBoolean:NO];
-//    [builder setFeatureFlag:@"server-url-change.enabled" withBoolean:NO];
-//    [builder setFeatureFlag:@"settings.enabled" withBoolean:NO];
-//    [builder setFeatureFlag:@"speakerstats.enabled" withBoolean:NO];
-//    [builder setFeatureFlag:@"kick-out.enabled" withBoolean:NO];
+    [builder setFeatureFlag:@"raise-hand.enabled" withBoolean:NO];
+    [builder setFeatureFlag:@"reactions.enabled" withBoolean:NO];
+    [builder setFeatureFlag:@"security-options.enabled" withBoolean:NO];
+    [builder setFeatureFlag:@"server-url-change.enabled" withBoolean:NO];
+    [builder setFeatureFlag:@"settings.enabled" withBoolean:NO];
+    [builder setFeatureFlag:@"speakerstats.enabled" withBoolean:NO];
+    [builder setFeatureFlag:@"kick-out.enabled" withBoolean:NO];
     [builder setFeatureFlag:@"tile-view.enabled" withBoolean:YES];
-//    [builder setFeatureFlag:@"toolbox.alwaysVisible" withBoolean:YES];
-    [builder setFeatureFlag:@"toolbox.enabled" withBoolean:NO];
-//    [builder setFeatureFlag:@"video-share.enabled" withBoolean:NO];
+    [builder setFeatureFlag:@"toolbox.alwaysVisible" withBoolean:YES];
+    [builder setFeatureFlag:@"toolbox.enabled" withBoolean:YES];
+    [builder setFeatureFlag:@"video-share.enabled" withBoolean:NO];
+    [builder setFeatureFlag:@"liveStreaming.enabled" withBoolean:NO];
     
     //Custom Properties
 //    [builder setAudioOnly:YES];
