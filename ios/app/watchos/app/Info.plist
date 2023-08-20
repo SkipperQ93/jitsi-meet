@@ -26,7 +26,7 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 	<key>WKCompanionAppBundleIdentifier</key>
-	<string>dev.ncc.usama.testApp2</string>
+	<string>dev.ncc.usama.testApp</string>
 	<key>WKWatchKitApp</key>
 	<true/>
 </dict>
