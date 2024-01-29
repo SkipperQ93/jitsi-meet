@@ -62,7 +62,7 @@ const TitleBar = (props: IProps) => {
     return (
         <View
             style = { styles.titleBarWrapper as ViewStyle }>
-            <View style = { styles.pipButtonContainer as ViewStyle }>
+            {/* <View style = { styles.pipButtonContainer as ViewStyle }>
                 <PictureInPictureButton styles = { styles.pipButton } />
             </View>
             <View
@@ -84,18 +84,17 @@ const TitleBar = (props: IProps) => {
                         </Text>
                     </View>
                 }
-                {/* eslint-disable-next-line react/jsx-no-bind */}
                 <Labels createOnPress = { props._createOnPress } />
-            </View>
+            </View> */}
             <View style = { styles.titleBarButtonContainer }>
                 <ToggleCameraButton styles = { styles.titleBarButton } />
             </View>
-            <View style = { styles.titleBarButtonContainer }>
-                <AudioDeviceToggleButton styles = { styles.titleBarButton } />
-            </View>
-            <View style = { styles.titleBarButtonContainer }>
-                <ParticipantsPaneButton styles = { styles.titleBarButton } />
-            </View>
+            {/*<View style = { styles.titleBarButtonContainer }>*/}
+            {/*    <AudioDeviceToggleButton styles = { styles.titleBarButton } />*/}
+            {/*</View>*/}
+            {/*<View style = { styles.titleBarButtonContainer }>*/}
+            {/*    <ParticipantsPaneButton styles = { styles.titleBarButton } />*/}
+            {/*</View>*/}
         </View>
     );
 };

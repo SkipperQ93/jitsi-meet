@@ -35,7 +35,7 @@ import {
 } from '../../../participants-pane/actions.native';
 import { toggleToolboxVisible } from '../../../toolbox/actions.native';
 import { shouldDisplayTileView } from '../../../video-layout/functions.native';
-import { SQUARE_TILE_ASPECT_RATIO } from '../../constants';
+import {SQUARE_TILE_ASPECT_RATIO, TILE_ASPECT_RATIO} from '../../constants';
 
 import AudioMutedIndicator from './AudioMutedIndicator';
 import ModeratorIndicator from './ModeratorIndicator';
@@ -233,7 +233,7 @@ class Thumbnail extends PureComponent<IProps> {
             indicators.push(<View
                 key = 'top-left-indicators'
                 style = { styles.thumbnailTopLeftIndicatorContainer as ViewStyle }>
-                { !_isVirtualScreenshare && <ConnectionIndicator participantId = { participantId } /> }
+                {/*{ !_isVirtualScreenshare && <ConnectionIndicator participantId = { participantId } /> }*/}
                 { !_isVirtualScreenshare && <RaisedHandIndicator participantId = { participantId } /> }
                 { tileView && (isScreenShare || _isVirtualScreenshare) && (
                     <View style = { styles.screenShareIndicatorContainer as ViewStyle }>
@@ -371,7 +371,7 @@ class Thumbnail extends PureComponent<IProps> {
         return (
             <Container
                 onClick = { this._onClick }
-                onLongPress = { this._onThumbnailLongPress }
+                // onLongPress = { this._onThumbnailLongPress }
                 style = { [
                     styles.thumbnail,
                     styleOverrides,

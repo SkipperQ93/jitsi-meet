@@ -122,7 +122,7 @@ function Toolbox(props: IProps) {
                         styles = { buttonStylesBorderless }
                         toggledStyles = { backgroundToggledStyle } />)}
                 {additionalButtons.has('tileview') && <TileViewButton styles = { buttonStylesBorderless } />}
-                {!_iAmVisitor && <OverflowMenuButton
+                {/* {!_iAmVisitor && <OverflowMenuButton
                     styles = { buttonStylesBorderless }
                     toggledStyles = { toggledButtonStyles } />
                 }
@@ -130,7 +130,7 @@ function Toolbox(props: IProps) {
                     ? <HangupMenuButton />
                     : <HangupButton
                         styles = { hangupButtonStyles } />
-                }
+                } */}
             </SafeAreaView>
         </View>
     );
